@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+    //fgdfsd
 
     /**
      * Reverse the migrations.
