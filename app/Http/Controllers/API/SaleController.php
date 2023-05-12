@@ -8,7 +8,6 @@ use App\Models\Pharmacy;
 use App\Models\Medican;
 use App\Models\Sale;
 use App\Models\User;
-//kkkkkkkkkkkkkkkkkk
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
