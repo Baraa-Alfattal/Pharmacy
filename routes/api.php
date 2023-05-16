@@ -44,6 +44,10 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("deleteMedican/{id}", [PharmacyController::class, "deleteMedican"]);
     Route::post("update_medi_id/{id}", [PharmacyController::class, "update_medi_id"]);
     Route::post("update_medi", [PharmacyController::class, "update_medi"]);
+
+
+    Route::post("search1", [PharmacyController::class, "search"]);
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
