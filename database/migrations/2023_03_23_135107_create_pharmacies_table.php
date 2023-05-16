@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('admin_id')->references('id')->on('admins')->cascadeOnDelete();
             $table->string('name_Pharmacy');
             $table->string('number_phone');
+            $table->text('site')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->timestamps();
