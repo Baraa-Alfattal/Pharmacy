@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->integer('age');
             $table->enum('gender',['male','female']); 
             $table->string('number');  
             $table->dateTime('b_day');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('img');
+            $table->string('img')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

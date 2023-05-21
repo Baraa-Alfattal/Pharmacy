@@ -15,10 +15,11 @@ class UserController extends Controller
     {
         // validation
         $request->validate([
-            "name" => "required",
+            "name" => "required|max:20",
             "email" => "required|email|unique:users",
-            "age" => "required",
-            "password" => "required|confirmed"
+            "b_day" => "required",
+            "number" => "required|min:2|max:10",
+            "password" => "required|confirmed|max:20"
         ]);
 
         // create user data + save
@@ -26,7 +27,8 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->age = $request->age;
+        $user->b_day = $request->b_day;
+        $user->number = $request->number;
         $user->password = bcrypt($request->password);
 
         $user->save();
