@@ -224,14 +224,14 @@ class PharmacyController extends Controller
         }
     }
 
-    public function update_medi_id(Request $request,$id)
+    public function update_medi_id(Request $request, $id)
     {
-       
+
         $medican = Medican::where([
             "id" => $id,
             'pharmacy_id' => auth()->user()->id
         ])->first();
-        
+
         if ($medican) {
 
             $medican->name = isset($request->name) ? $request->name : $medican->name;
@@ -255,12 +255,12 @@ class PharmacyController extends Controller
 
     public function update_medi(Request $request)
     {
-       
+
         $medican = Medican::where([
-            "name" =>  $request->name ,
+            "name" =>  $request->name,
             'pharmacy_id' => auth()->user()->id
         ])->first();
-        
+
         if ($medican) {
 
             $medican->name = isset($request->name) ? $request->name : $medican->name;
