@@ -9,13 +9,7 @@ class Medican extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'pharmacy_id',
-        'name',
-        'price',
-        'description',
-        'quantity',
-    ];
+    protected $guarded = ['id'];
 
     public $timestamps = false;
 }

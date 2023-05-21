@@ -9,15 +9,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'pharmacy_id',
-        'medican_id',
-        'quantity',
-        'total'
-    ];
+    protected $guarded = ['id'];
 
     public $timestamps = false;
-
-  
 }

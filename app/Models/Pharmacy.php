@@ -13,15 +13,8 @@ class Pharmacy extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-   
-    protected $fillable = [
-        'name',
-        'email',
-        'site',
-        'time',
-        'day',
-        'password',
-    ];
+
+    protected $guarded = ['id'];
 
     public $timestamps = false;
 
@@ -29,5 +22,4 @@ class Pharmacy extends Model
     {
         return $this->hasMany(Medican::class);
     }
-
 }
