@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('medicnes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('pharmacy_id')->unsigned()->nullable();
-            $table->foreign('pharmacy_id')->references('id')->on('pharmacies')->cascadeOnDelete();
             $table->string('name');
-            $table->string('photo')->nullable();
+            $table->string('scientific_name');
+            $table->string('company_name');
+            $table->string('category');
+            $table->string('active_ingredient');
+            $table->string('img')->nullable();
             $table->string('uses_for');
             $table->string('effects');
-            $table->integer('quantity');
-            $table->dateTime('expiry_date');
+            // $table->integer('quantity');
+            // $table->dateTime('expiry_date');
             $table->timestamps();
         });
     }
