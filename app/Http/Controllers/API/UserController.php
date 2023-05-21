@@ -137,7 +137,7 @@ class UserController extends Controller
  
              $p->name = isset($request->name) ? $request->name : $p->name;
              $p->email = isset($request->email) ? $request->email : $p->email;
-             $p->age = isset($request->age) ? $request->age : $p->age;
+             $p->b_day = isset($request->b_day) ? $request->b_day : $p->b_day;
              $p->password = isset($request->password) ? bcrypt($request->password) : $p->password;
            
              $p->save();
