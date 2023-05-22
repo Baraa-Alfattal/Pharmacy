@@ -18,7 +18,14 @@ class PharmacyController extends Controller
         $request->validate([
             "name" => "required",
             "email" => "required|email|unique:pharmacies",
-            "password" => "required|confirmed"
+            "password" => "required|confirmed",
+            //"role_id" => "required|integer|max:3",
+            "number_phone" => "required|min:2|max:10",
+            "site" => "required",
+            "img" => "required",
+            "start_time" => "required",
+            "end_time" => "required",
+
         ]);
 
         // create user data + save
@@ -27,6 +34,12 @@ class PharmacyController extends Controller
         $pharmacy->name = $request->name;
         $pharmacy->email = $request->email;
         $pharmacy->password = bcrypt($request->password);
+        //$pharmacy->role_id = $request->role_id;
+        $pharmacy->number_phone = $request->number_phone;
+        $pharmacy->site = $request->site;
+        $pharmacy->img = $request->img;
+        $pharmacy->start_time = $request->start_time;
+        $pharmacy->end_time = $request->end_time;
 
         $pharmacy->save();
 
@@ -118,9 +131,11 @@ class PharmacyController extends Controller
             $p->name = isset($request->name) ? $request->name : $p->name;
             $p->email = isset($request->email) ? $request->email : $p->email;
             $p->site = isset($request->site) ? $request->site : $p->site;
-            $p->time = isset($request->time) ? $request->time : $p->time;
-            $p->day = isset($request->day) ? $request->day : $p->day;
+            $p->start_time = isset($request->start_time) ? $request->start_time : $p->start_time;
+            $p->end_time = isset($request->end_time) ? $request->end_time : $p->end_time;
+            $p->img = isset($request->img) ? $request->img : $p->img;
             $p->password = isset($request->password) ? bcrypt($request->password) : $p->password;
+            $p->number_phone = isset($request->number_phone) ? $request->number_phone : $p->number_phone;
 
             $p->save();
 

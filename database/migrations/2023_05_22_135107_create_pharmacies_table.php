@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('role_id')->references('id')->on('roles')->cascadeOnDelete();
             $table->string('number_phone');
             $table->text('site')->nullable();
-            $table->string('img');
+            $table->string('img')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->rememberToken();
