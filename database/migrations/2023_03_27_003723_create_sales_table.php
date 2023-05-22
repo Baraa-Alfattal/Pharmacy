@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger("user_id");
-            $table->unsignedInteger("pharmacy_id");
+            //$table->unsignedInteger("pharmacy_id");
             $table->unsignedInteger("medican_id");
             $table->string('medican_name',20);
             $table->integer('quantity'); // الكمية المشتريات

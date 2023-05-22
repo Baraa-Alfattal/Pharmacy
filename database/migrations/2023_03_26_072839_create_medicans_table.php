@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medicnes', function (Blueprint $table) {
+        Schema::create('medicans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('scientific_name');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('img')->nullable();
             $table->string('uses_for');
             $table->string('effects');
-            // $table->integer('quantity');
+            $table->integer('quantity');
             // $table->dateTime('expiry_date');
             $table->timestamps();
         });

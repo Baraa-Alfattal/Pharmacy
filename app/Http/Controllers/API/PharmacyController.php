@@ -153,18 +153,25 @@ class PharmacyController extends Controller
 
     public function add(Request $request)
     {
-        $pharmacy_id = auth()->user()->id;
+        //$pharmacy_id = auth()->user()->id;
 
         $validatedData = $request->validate([
             'name' => 'required|max:25',
-            'price' => 'required|numeric|min:0',
-            'description' => 'nullable',
-            'quantity' => 'nullable'
+            'scientific_name' => 'required|max:25',
+            'company_name' => 'required|max:25',
+            'category' => 'required|max:25|nullable',
+            'active_ingredient' => 'required|max:25|nullable',
+            'img' => 'required|max:25',
+            'uses_for' => 'required|max:25|nullable',
+            'effects' => 'required|max:25|nullable',
+            'quantity' => 'required|nullable'
         ]);
+
+
 
         $medican = Medican::where([
             "name" => $request->name,
-            'pharmacy_id' => auth()->user()->id
+            "company_name" => $request->company_name
         ])->first();
 
         if ($medican) {
@@ -182,11 +189,16 @@ class PharmacyController extends Controller
 
             $medican = new Medican();
 
-            $medican->pharmacy_id = auth()->user()->id;
+            //$medican->pharmacy_id = auth()->user()->id;
             $medican->name = $request->name;
-            $medican->price = $request->price;
-            $medican->description = $request->description;
+            $medican->scientific_name = $request->scientific_name;
+            $medican->company_name = $request->company_name;
+            $medican->category = $request->category;
+            $medican->active_ingredient = $request->active_ingredient;
+            $medican->img = $request->img;
+            $medican->uses_for = $request->uses_for;
             $medican->quantity = $request->quantity;
+            $medican->effects = $request->effects;
 
             $medican->save();
 
@@ -200,14 +212,21 @@ class PharmacyController extends Controller
 
     public function totalmedicans()
     {
-        $id = auth()->user()->id;
+        // $id = auth()->user()->id;
 
-        $p = Pharmacy::find($id)->medicans;
+        // $p = Pharmacy::find($id)->medicans;
 
+        // return response()->json([
+        //     "status" => 1,
+        //     "message" => "Total your medicans ",
+        //     "data" => $p
+        // ]);
+
+        $medican = Medican::all();
         return response()->json([
             "status" => 1,
             "message" => "Total your medicans ",
-            "data" => $p
+            "data" => $medican
         ]);
     }
 
@@ -215,11 +234,11 @@ class PharmacyController extends Controller
     public function deleteMedican($id)
     {
 
-        $pharmacy_id = auth()->user()->id;
+        //$pharmacy_id = auth()->user()->id;
 
         if (Medican::where([
             "id" => $id,
-            "pharmacy_id" => $pharmacy_id
+            //"pharmacy_id" => $pharmacy_id
         ])->exists()) {
 
             $Medican = Medican::find($id);
@@ -244,16 +263,21 @@ class PharmacyController extends Controller
 
         $medican = Medican::where([
             "id" => $id,
-            'pharmacy_id' => auth()->user()->id
+            //'pharmacy_id' => auth()->user()->id
         ])->first();
 
         if ($medican) {
 
             $medican->name = isset($request->name) ? $request->name : $medican->name;
-            $medican->price = isset($request->price) ? $request->price : $medican->price;
-            $medican->description = isset($request->description) ? $request->description : $medican->description;
+            $medican->scientific_name = isset($request->scientific_name) ? $request->scientific_name : $medican->scientific_name;
+            $medican->company_name = isset($request->company_name) ? $request->company_name : $medican->company_name;
             $medican->quantity = isset($request->quantity) ? $request->quantity : $medican->quantity;
-
+            $medican->category = isset($request->category) ? $request->category : $medican->category;
+            $medican->active_ingredient = isset($request->active_ingredient) ? $request->active_ingredient : $medican->active_ingredient;
+            $medican->img = isset($request->img) ? $request->img : $medican->img;
+            $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
+            $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
+            
             $medican->save();
 
             return response()->json([
@@ -273,15 +297,20 @@ class PharmacyController extends Controller
 
         $medican = Medican::where([
             "name" =>  $request->name,
-            'pharmacy_id' => auth()->user()->id
+            //'pharmacy_id' => auth()->user()->id
         ])->first();
 
         if ($medican) {
 
             $medican->name = isset($request->name) ? $request->name : $medican->name;
-            $medican->price = isset($request->price) ? $request->price : $medican->price;
-            $medican->description = isset($request->description) ? $request->description : $medican->description;
+            $medican->scientific_name = isset($request->scientific_name) ? $request->scientific_name : $medican->scientific_name;
+            $medican->company_name = isset($request->company_name) ? $request->company_name : $medican->company_name;
             $medican->quantity = isset($request->quantity) ? $request->quantity : $medican->quantity;
+            $medican->category = isset($request->category) ? $request->category : $medican->category;
+            $medican->active_ingredient = isset($request->active_ingredient) ? $request->active_ingredient : $medican->active_ingredient;
+            $medican->img = isset($request->img) ? $request->img : $medican->img;
+            $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
+            $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
 
             $medican->save();
 

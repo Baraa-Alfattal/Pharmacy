@@ -22,21 +22,21 @@ class SaleController extends Controller
 
         // validation
         $request->validate([
-            "pharmacy_id" => "required|integer",
+            //"pharmacy_id" => "required|integer",
             "medican_id" => "required|integer",
             "quantity" => "required|integer",
         ]);
 
-        $p = Pharmacy::where([
-            'id' => $request->pharmacy_id
-        ])->first();
+        // $p = Pharmacy::where([
+        //     'id' => $request->pharmacy_id
+        // ])->first();
 
-        if (!$p) {
-            return response()->json([
-                "status" => 0,
-                "message" => "pharmacy  doesn't exists"
-            ]);
-        }
+        // if (!$p) {
+        //     return response()->json([
+        //         "status" => 0,
+        //         "message" => "pharmacy  doesn't exists"
+        //     ]);
+        // }
 
         $medican = Medican::where([
             'id' => $request->medican_id
@@ -56,12 +56,13 @@ class SaleController extends Controller
             ]);
         }
 
-        if ($medican && $p) {
+        // if ($medican && $p)
+        if ($medican )  {
 
             $sale = new Sale();
 
             $sale->user_id = auth()->user()->id;
-            $sale->pharmacy_id = $request->pharmacy_id;
+            //$sale->pharmacy_id = $request->pharmacy_id;
             $sale->medican_id = $request->medican_id;
             $sale->medican_name = $medican->name;
             $sale->quantity = $request->quantity;
@@ -98,16 +99,16 @@ class SaleController extends Controller
             "quantity" => "required|integer",
         ]);
 
-        $pharmacy = Pharmacy::where([
-            'name' => $request->pharmacy
-        ])->first();
+        // $pharmacy = Pharmacy::where([
+        //     'name' => $request->pharmacy
+        // ])->first();
 
-        if (!$pharmacy) {
-            return response()->json([
-                "status" => 0,
-                "message" => "pharmacy  doesn't exists"
-            ]);
-        }
+        // if (!$pharmacy) {
+        //     return response()->json([
+        //         "status" => 0,
+        //         "message" => "pharmacy  doesn't exists"
+        //     ]);
+        // }
 
         $medican = Medican::where([
             'name' => $request->medican_name
@@ -127,12 +128,12 @@ class SaleController extends Controller
             ]);
         }
 
-        if ($medican && $pharmacy) {
+        if ($medican) {
 
             $sale = new Sale();
 
             $sale->user_id = auth()->user()->id;
-            $sale->pharmacy_id = $pharmacy->id;
+           // $sale->pharmacy_id = $pharmacy->id;
             $sale->medican_id = $medican->id;
             $sale->medican_name = $request->medican_name;
             $sale->quantity = $request->quantity;
