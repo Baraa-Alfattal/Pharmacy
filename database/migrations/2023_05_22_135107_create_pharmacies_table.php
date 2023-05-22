@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('number_phone');
             $table->text('site')->nullable();
             $table->string('img')->nullable();
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->rememberToken();
             $table->timestamps();
         });
