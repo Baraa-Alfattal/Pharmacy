@@ -277,7 +277,7 @@ class PharmacyController extends Controller
             $medican->img = isset($request->img) ? $request->img : $medican->img;
             $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
             $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
-            
+
             $medican->save();
 
             return response()->json([
@@ -328,64 +328,90 @@ class PharmacyController extends Controller
 
     public function search(Request $request)
     {
-        $query = Medican::query()
-            ->select(
+        $request->validate([
+            'search_text' => ['required', 'string'],
+            'search_type' => [
+                'required', 'string',
+                'in:name,scientific_name,company_name,category,active_ingredient,description'
+            ]
+        ]);
 
-                'id',
-                'pharmacy_id',
-                'name',
-                'scientific_name',
-                'company_name',
-                'category',
-                'active_ingredient',
-                'price',
-                'description',
-                // 'id',
-                // 'active_ingredient',
-                // 'brand_name',
-                // 'profit',//
-                // 'strength',//
-                // 'marketing_status',//
-                // 'essential',//
-                // 'EPC',//
-                // 'MOA',//
-                // 'CS',//
-                // 'PE',//
-                // 'guide',//ارشادات
-                // 'route'//جرعة
-            )
-            ->orderBy('id');
+        $query = Medican::where($request->search_type, 'like', '%' . $request->search_text . '%')->paginate();
 
-        $columns = [
-            'id',
-            'pharmacy_id',
-            'name',
-            'scientific_name',
-            'company_name',
-            'category',
-            'active_ingredient',
-            'price',
-            'description',
-            // 'active_ingredient',
-            // 'brand_name', 'profit',
-            // 'strength', 'marketing_status',
-            // 'essential',
-            // 'EPC', 'MOA', 'CS', 'PE', 'guide', 'route'
-        ];
+        if ($query->IsEmpty())
+            return response()->json([
+                'code' => '404',
+                'status' => 'Fail',
+                'message' => 'No Results Found',
+                'data' => [],
+            ], 404);
 
-        $searchTerm = $request->input('search_term'); // استلام البحث من الطلب
+        else
+            return response()->json([
+                'code' => '200',
+                'status' => 'success',
+                'message' => 'Search Results',
+                'data' => $query,
+            ], 200);
 
-        foreach ($columns as $c) {
+        // $query = Medican::query()
+        //     ->select(
 
-            $query->orwhere($c, 'like', '%' . $searchTerm . '%');
-        }
-        if ($query->count()) {
+        //         'id',
+        //         'pharmacy_id',
+        //         'name',
+        //         'scientific_name',
+        //         'company_name',
+        //         'category',
+        //         'active_ingredient',
+        //         'price',
+        //         'description',
+        //         // 'id',
+        //         // 'active_ingredient',
+        //         // 'brand_name',
+        //         // 'profit',//
+        //         // 'strength',//
+        //         // 'marketing_status',//
+        //         // 'essential',//
+        //         // 'EPC',//
+        //         // 'MOA',//
+        //         // 'CS',//
+        //         // 'PE',//
+        //         // 'guide',//ارشادات
+        //         // 'route'//جرعة
+        //     )
+        //     ->orderBy('id');
 
-            $drugs = $query->get();
-            return response()->json(['Search Results' => $drugs]);
-        } else {
-            return response()->json(['message' => 'No Results Found']);
-        }
+        // $columns = [
+        //     'id',
+        //     'pharmacy_id',
+        //     'name',
+        //     'scientific_name',
+        //     'company_name',
+        //     'category',
+        //     'active_ingredient',
+        //     'price',
+        //     'description',
+        //     // 'active_ingredient',
+        //     // 'brand_name', 'profit',
+        //     // 'strength', 'marketing_status',
+        //     // 'essential',
+        //     // 'EPC', 'MOA', 'CS', 'PE', 'guide', 'route'
+        // ];
+
+        // $searchTerm = $request->input('search_term'); // استلام البحث من الطلب
+
+        // foreach ($columns as $c) {
+
+        //     $query->orwhere($c, 'like', '%' . $searchTerm . '%');
+        // }
+        // if ($query->count()) {
+
+        //     $drugs = $query->get();
+        //     return response()->json(['Search Results' => $drugs]);
+        // } else {
+        //     return response()->json(['message' => 'No Results Found']);
+        // }
     } //search of all drugs
 }
 
