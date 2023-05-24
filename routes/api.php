@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PharmacyController;
+use App\Http\Controllers\API\SaleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,6 +46,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post("update_medi_id/{id}", [PharmacyController::class, "update_medi_id"]);
     Route::post("update_medi", [PharmacyController::class, "update_medi"]);
 
+
+    Route::post("add_sale", [SaleController::class, "sale"]);
 
     Route::post("search1", [PharmacyController::class, "search"]);
 
