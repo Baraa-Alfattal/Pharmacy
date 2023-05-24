@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('diseases', function (Blueprint $table) {
             $table->id();
-            $table->enum('name_role',['super_admin','admin']);
+            $table->string('medicine_used')->nullable();
+            $table->string('medicine_allergies')->nullable();
+            $table->string('food_allergies')->nullable();
+            $table->string('have_disease')->nullable();
+            $table->string('another_disease')->nullable();
+
             $table->timestamps();
         });
     }
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('diseases');
     }
 };
