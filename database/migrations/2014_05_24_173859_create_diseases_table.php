@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('diseases', function (Blueprint $table) {
             $table->id();
-            $table->string('medicine_used')->nullable();
+            $table->integer("user_id")->unsigned();
+            $table->string('medicine_used',100)->nullable();
             $table->string('medicine_allergies')->nullable();
             $table->string('food_allergies')->nullable();
             $table->string('have_disease')->nullable();
