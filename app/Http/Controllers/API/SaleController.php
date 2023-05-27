@@ -94,7 +94,7 @@ class SaleController extends Controller
 
         // validation
         $request->validate([
-            "pharmacy" => "required",
+            // "pharmacy" => "required",
             "medican_name" => "required",
             "quantity" => "required|integer",
         ]);

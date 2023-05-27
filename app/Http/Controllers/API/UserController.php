@@ -18,6 +18,7 @@ class UserController extends Controller
             "name" => "required|max:20",
             "email" => "required|email|unique:users",
             "b_day" => "required",
+            "gender" => "required|min:2|max:10",
             "number" => "required|min:2|max:10",
             "password" => "required|confirmed|max:20",
             "medicine_used" => "required|max:50",
@@ -33,6 +34,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->b_day = $request->b_day;
+        $user->gender = $request->gender;
         $user->number = $request->number;
         $user->password = bcrypt($request->password);
         $user->medicine_used = $request->medicine_used;

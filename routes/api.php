@@ -48,6 +48,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
 
 
     Route::post("add_sale", [SaleController::class, "sale"]);
+    Route::post("add_sale_name", [SaleController::class, "sale_name"]);
 
     Route::post("search1", [PharmacyController::class, "search"]);
 
