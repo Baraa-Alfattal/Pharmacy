@@ -20,7 +20,12 @@ class UserController extends Controller
             "b_day" => "required",
             "gender" => "required|min:2|max:10",
             "number" => "required|min:2|max:10",
-            "password" => "required|confirmed|max:20"
+            "password" => "required|confirmed|max:20",
+            "medicine_used" => "required|max:50",
+            "medicine_allergies" => "required|max:50",
+            "food_allergies" => "required|max:50",
+            "have_disease" => "required|max:50",
+            "another_disease" => "required|max:50"
         ]);
 
         // create user data + save
@@ -32,6 +37,11 @@ class UserController extends Controller
         $user->gender = $request->gender;
         $user->number = $request->number;
         $user->password = bcrypt($request->password);
+        $user->medicine_used = $request->medicine_used;
+        $user->medicine_allergies = $request->medicine_allergies;
+        $user->food_allergies = $request->food_allergies;
+        $user->have_disease = $request->have_disease;
+        $user->another_disease = $request->another_disease;
 
         $user->save();
 
@@ -68,7 +78,7 @@ class UserController extends Controller
         //     "access_token" => $token
         // ]);
 
-        
+
         // check user
         $user = User::where("email", "=", $request->email)->first();
 
@@ -116,7 +126,7 @@ class UserController extends Controller
     // USER LOGOUT API - GET
     public function logout()
     {
-      
+
         auth()->user()->tokens()->delete(); // هذا السطر صحيح ولكن محرر الاكواد لا يتعرف علية
 
         return response()->json([
@@ -125,35 +135,34 @@ class UserController extends Controller
         ]);
     }
 
-     // USER update API - post
-     public function update(Request $request)
-     {
- 
-         $users_id = auth()->user()->id;
- 
+    // USER update API - post
+    public function update(Request $request)
+    {
+
+        $users_id = auth()->user()->id;
+
         //  $request->validate([
         //      "email" => "required|email|unique:users",
         //  ]);
- 
-         if ($p = User::find($users_id)) {
- 
-             $p->name = isset($request->name) ? $request->name : $p->name;
-             $p->email = isset($request->email) ? $request->email : $p->email;
-             $p->b_day = isset($request->b_day) ? $request->b_day : $p->b_day;
-             $p->password = isset($request->password) ? bcrypt($request->password) : $p->password;
-           
-             $p->save();
- 
-             return response()->json([
-                 "status" => 1,
-                 "message" => "user data has been updated"
-             ]);
-         } else {
-             return response()->json([
-                 "status" => false,
-                 "message" => "user doesn't exists"
-             ]);
-         }
- 
-     }
+
+        if ($p = User::find($users_id)) {
+
+            $p->name = isset($request->name) ? $request->name : $p->name;
+            $p->email = isset($request->email) ? $request->email : $p->email;
+            $p->b_day = isset($request->b_day) ? $request->b_day : $p->b_day;
+            $p->password = isset($request->password) ? bcrypt($request->password) : $p->password;
+
+            $p->save();
+
+            return response()->json([
+                "status" => 1,
+                "message" => "user data has been updated"
+            ]);
+        } else {
+            return response()->json([
+                "status" => false,
+                "message" => "user doesn't exists"
+            ]);
+        }
+    }
 }
