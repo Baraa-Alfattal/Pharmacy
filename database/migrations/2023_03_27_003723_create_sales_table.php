@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedInteger("user_id");
             //$table->unsignedInteger("pharmacy_id");
             $table->unsignedInteger("medican_id");
-            $table->string('medican_name',20);
             $table->integer('quantity'); // الكمية المشتريات
-            $table->decimal('total',8,2) ;  
+            $table->decimal('total',8,2) ; 
+            $table->decimal('earnings',8,2) ; 
             $table->timestamps();
         });
     }

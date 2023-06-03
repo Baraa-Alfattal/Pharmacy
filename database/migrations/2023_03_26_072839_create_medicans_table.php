@@ -22,7 +22,9 @@ return new class extends Migration
             $table->string('uses_for');
             $table->string('effects');
             $table->integer('quantity');
-            // $table->dateTime('expiry_date');
+            $table->dateTime('expiry_date');
+            $table->decimal('b_price',8,2); 
+            $table->decimal('a_price',8,2); 
             $table->timestamps();
         });
     }

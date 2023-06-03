@@ -64,10 +64,11 @@ class SaleController extends Controller
             $sale->user_id = auth()->user()->id;
             //$sale->pharmacy_id = $request->pharmacy_id;
             $sale->medican_id = $request->medican_id;
-            $sale->medican_name = $medican->name;
+           // $sale->medican_name = $medican->name;
             $sale->quantity = $request->quantity;
-            $sale->total = $request->quantity * $medican->price;
-
+            $sale->total = $request->quantity * $medican->a_price;
+            $sale->earnings = ($request->quantity * $medican->a_price)-
+                              ($request->quantity * $medican->b_price);
             $sale->save();
 
             //تعديل كمية الدواء التي في المخزن بعد الشراء
@@ -135,9 +136,11 @@ class SaleController extends Controller
             $sale->user_id = auth()->user()->id;
            // $sale->pharmacy_id = $pharmacy->id;
             $sale->medican_id = $medican->id;
-            $sale->medican_name = $request->medican_name;
+            //$sale->medican_name = $request->medican_name;
             $sale->quantity = $request->quantity;
             $sale->total = $request->quantity * $medican->price;
+            $sale->earnings = ($request->quantity * $medican->a_price)-
+                              ($request->quantity * $medican->b_price);
 
             $sale->save();
 

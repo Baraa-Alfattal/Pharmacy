@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('img')->nullable();
-            $table->decimal('price',8,2);
+            $table->decimal('b_price',8,2);
+            $table->decimal('a_price',8,2);
             $table->integer('quantity');
             $table->timestamps();
         });

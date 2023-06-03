@@ -164,7 +164,11 @@ class PharmacyController extends Controller
             'img' => 'required|max:25',
             'uses_for' => 'required|max:25|nullable',
             'effects' => 'required|max:25|nullable',
-            'quantity' => 'required|nullable'
+            'quantity' => 'required|nullable',
+            'expiry_date' => 'required|nullable',
+            'b_price' => 'required|nullable',
+            'a_price' => 'required|nullable',
+        
         ]);
 
 
@@ -199,7 +203,12 @@ class PharmacyController extends Controller
             $medican->uses_for = $request->uses_for;
             $medican->quantity = $request->quantity;
             $medican->effects = $request->effects;
+            $medican->expiry_date = $request->expiry_date;
+            $medican->b_price = $request->b_price;
+            $medican->a_price = $request->a_price;
+            
 
+            $medican->effects = $request->effects;
             $medican->save();
 
             return response()->json([
@@ -277,6 +286,9 @@ class PharmacyController extends Controller
             $medican->img = isset($request->img) ? $request->img : $medican->img;
             $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
             $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
+            $medican->expiry_date = isset($request->expiry_date) ? $request->expiry_date : $medican->expiry_date;
+            $medican->b_price = isset($request->b_price) ? $request->b_price : $medican->b_price;
+            $medican->a_price = isset($request->a_price) ? $request->a_price : $medican->a_price;
 
             $medican->save();
 
@@ -311,6 +323,9 @@ class PharmacyController extends Controller
             $medican->img = isset($request->img) ? $request->img : $medican->img;
             $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
             $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
+            $medican->expiry_date = isset($request->expiry_date) ? $request->expiry_date : $medican->expiry_date;
+            $medican->b_price = isset($request->b_price) ? $request->b_price : $medican->b_price;
+            $medican->a_price = isset($request->a_price) ? $request->a_price : $medican->a_price;
 
             $medican->save();
 
