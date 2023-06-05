@@ -74,7 +74,8 @@ class PharmacyController extends Controller
                 return response()->json([
                     "status" => 1,
                     "message" => "Pharmacy logged in successfully",
-                    "access_token" => $token
+                    "access_token" => $token,
+                    "info"=> $pharmacy
                 ]);
             } else {
 
