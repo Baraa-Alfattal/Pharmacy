@@ -67,6 +67,7 @@ class SaleController extends Controller
            // $sale->medican_name = $medican->name;
             $sale->quantity = $request->quantity;
             $sale->total = $request->quantity * $medican->a_price;
+            $sale->cost = $request->quantity * $medican->b_price;
             $sale->earnings = ($request->quantity * $medican->a_price)-
                               ($request->quantity * $medican->b_price);
             $sale->save();
@@ -138,7 +139,8 @@ class SaleController extends Controller
             $sale->medican_id = $medican->id;
             //$sale->medican_name = $request->medican_name;
             $sale->quantity = $request->quantity;
-            $sale->total = $request->quantity * $medican->price;
+            $sale->total = $request->quantity * $medican->a_price;
+            $sale->cost = $request->quantity * $medican->b_price;
             $sale->earnings = ($request->quantity * $medican->a_price)-
                               ($request->quantity * $medican->b_price);
 

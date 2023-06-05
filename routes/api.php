@@ -7,6 +7,8 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PharmacyController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\TestController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,6 +60,10 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post("add_sale_name", [SaleController::class, "sale_name"]);
 
     Route::post("search1", [PharmacyController::class, "search"]);
+
+
+    Route::get("daily", [TestController::class, "daily_handle"]);
+    Route::get("monthly", [TestController::class, "monthly_handle"]);
 
 });
 

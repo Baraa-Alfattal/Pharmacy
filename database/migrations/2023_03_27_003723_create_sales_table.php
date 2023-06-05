@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger("medican_id");
             $table->integer('quantity'); // الكمية المشتريات
             $table->decimal('total',8,2) ; 
+            $table->decimal('cost',8,2) ; 
             $table->decimal('earnings',8,2) ; 
             $table->timestamps();
         });
