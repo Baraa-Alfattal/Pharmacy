@@ -26,7 +26,9 @@ return new class extends Migration
             $table->string('food_allergies')->nullable();
             $table->string('have_disease')->nullable();
             $table->string('another_disease')->nullable();
-          
+
+            //Add notifications column in database.
+            $table->json('notifications')->nullable();
         });
     }
 
