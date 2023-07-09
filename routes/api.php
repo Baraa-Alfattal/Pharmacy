@@ -65,6 +65,9 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("daily", [TestController::class, "daily_handle"]);
     Route::get("monthly", [TestController::class, "monthly_handle"]);
 
+    Route::post("that_day", [TestController::class, "get_daily_earnings"]);
+    Route::get("7day", [TestController::class, "get_7day"]);
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
