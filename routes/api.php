@@ -65,8 +65,12 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("daily", [TestController::class, "daily_handle"]);
     Route::get("monthly", [TestController::class, "monthly_handle"]);
 
+<<<<<<< HEAD
     Route::post("that_day", [TestController::class, "get_daily_earnings"]);
     Route::get("7day", [TestController::class, "get_7day"]);
+=======
+    Route::post("add_notification", [UserController::class, "add_notification"]);
+>>>>>>> 3b77761a5f3ccc29d65fae458e4419aed6811537
 
 });
 

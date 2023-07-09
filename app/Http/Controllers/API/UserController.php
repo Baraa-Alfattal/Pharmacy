@@ -167,4 +167,33 @@ class UserController extends Controller
             ]);
         }
     }
+
+    //This method need to be recoded..
+    //should return a Map<"all notifications", List<NotificatonModel>>.
+    public function add_notification(Request $request){
+        $request -> validate([
+            "user_id" => "required",
+            "user_name" => "required",
+            "medicine_name" => "required"
+        ]);
+        $users_id = auth()->user()->id;
+        if ($p = User::find($users_id)){
+            $p->notifications = 
+            ["first notificatoin" => [
+                "user_id"=>$request->user_id, 
+                "user_name" => $request->user_name, 
+                "medicine_name"=>$request->medicine_name
+            ]];
+            $p->save();
+            return response()->json([
+                "status"=>1, 
+                "message" => "notifications success",
+                "data" => $p->notifications], 200);
+        }
+    
+        return response()->json([
+            "status" => 0,
+            "message" => "User not found"
+        ], 200);
+    }
 }
