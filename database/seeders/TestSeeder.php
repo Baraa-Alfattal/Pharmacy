@@ -19,7 +19,7 @@ class TestSeeder extends Seeder
 
             $today = Carbon::today();
 
-            $day = $today->addDay($i);
+            $day = $today->subDay($i);
 
             $e = new Earning();
 

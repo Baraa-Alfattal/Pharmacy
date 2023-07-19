@@ -131,7 +131,7 @@ class TestController extends Controller
 
         for ($i = 0; $i < 7; $i++) {
 
-            $e = Earning::whereDate('date', '=', Carbon::today()->addDay($i))->get();
+            $e = Earning::whereDate('date', '=', Carbon::today()->subDay($i))->get();
             //$e  = Earning::latest()->take(7)->get();
             foreach ($e as $e) {
                 $de[$e->date] = $e->earnings;
