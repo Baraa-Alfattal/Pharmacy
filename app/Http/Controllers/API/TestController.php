@@ -140,7 +140,7 @@ class TestController extends Controller
 
         return response()->json([
             "status" => 1,
-            "message" => "your day earnings",
+            "message" => "your earnings",
             'data' => $de
         ]);
     }
