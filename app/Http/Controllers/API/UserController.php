@@ -197,8 +197,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    //This method need to be recoded..
-    //should return a Map<"all notifications", List<NotificatonModel>>.
+
+
     public function add_notification(Request $request)
     {
         $request->validate([
@@ -218,13 +218,16 @@ class UserController extends Controller
             return response()->json([
                 "status" => 1,
                 "message" => "notifications success",
-                "data" => $p->notifications
-            ], 200);
+                "data" => $p->notifications, 200
+            ]);
         }
 
-        return response()->json([
-            "status" => 0,
-            "message" => "User not found"
-        ], 200);
+        return response()->json(
+            [
+                "status" => 0,
+                "message" => "User not found"
+            ],
+            200
+        );
     }
 }
