@@ -28,9 +28,10 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("profile", [UserController::class, "profile"]);
     Route::post("update", [UserController::class, "update"]);
     Route::get("logout", [UserController::class, "logout"]);
+    Route::get('/add_cart', [UserController::class, "add_cart"]);
 
     // course api routes
-   
+
 });
 
 Route::post("ph_register", [PharmacyController::class, "register"]);

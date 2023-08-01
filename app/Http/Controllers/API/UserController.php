@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\disease;
+use App\Models\FcmToken;
+use Dotenv\Validator;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -166,5 +168,35 @@ class UserController extends Controller
                 "message" => "user doesn't exists"
             ]);
         }
+    }
+
+    function add_cart(Request $request)
+    {
+        $validation=Validator::make($request->paginate(),[
+
+        ]);
+
+
+    }
+
+    function fcm_token(Request $request){
+        $request->validate([
+            "user_id" => "required|integer|exists:users,id",
+            "fcmtoken" => "required|unique:fcm_tokens,fcmtoken",
+        ]);
+
+        // create user data + save
+        $fcmtoken = new FcmToken();
+
+        $fcmtoken->user_id = $request->user_id;
+        $fcmtoken->fcmtoken = $request->fcmtoken;
+
+        $fcmtoken->save();
+
+
+        return response()->json([
+            "status" => 200,
+            "message" => "successfully"
+        ], 200);
     }
 }
