@@ -97,7 +97,7 @@ class UserController extends Controller
                     "status" => 1,
                     "message" => "user logged in AS User Successfully",
                     "access_token" => $token,
-                    "info"=> $user
+                    "info" => $user
                 ]);
             } else {
 
@@ -172,14 +172,11 @@ class UserController extends Controller
 
     function add_cart(Request $request)
     {
-        $validation=Validator::make($request->paginate(),[
-
-        ]);
-
-
+        $validation = Validator::make($request->paginate(), []);
     }
 
-    function fcm_token(Request $request){
+    function fcm_token(Request $request)
+    {
         $request->validate([
             "user_id" => "required|integer|exists:users,id",
             "fcmtoken" => "required|unique:fcm_tokens,fcmtoken",
@@ -197,6 +194,37 @@ class UserController extends Controller
         return response()->json([
             "status" => 200,
             "message" => "successfully"
+        ], 200);
+    }
+
+    //This method need to be recoded..
+    //should return a Map<"all notifications", List<NotificatonModel>>.
+    public function add_notification(Request $request)
+    {
+        $request->validate([
+            "user_id" => "required",
+            "user_name" => "required",
+            "medicine_name" => "required"
+        ]);
+        $users_id = auth()->user()->id;
+        if ($p = User::find($users_id)) {
+            $p->notifications =
+                ["first notificatoin" => [
+                    "user_id" => $request->user_id,
+                    "user_name" => $request->user_name,
+                    "medicine_name" => $request->medicine_name
+                ]];
+            $p->save();
+            return response()->json([
+                "status" => 1,
+                "message" => "notifications success",
+                "data" => $p->notifications
+            ], 200);
+        }
+
+        return response()->json([
+            "status" => 0,
+            "message" => "User not found"
         ], 200);
     }
 }

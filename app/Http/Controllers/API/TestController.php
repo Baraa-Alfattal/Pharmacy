@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Carbon\Carbon;
 use App\Models\Sale;
 
@@ -17,26 +18,79 @@ class TestController extends Controller
 
         $today = Carbon::today();
 
-        $sales = Sale::whereDate('created_at', $today)->get();
+        $e = Earning::where([
+            'date' => $today,
+        ])->first();
 
-        $dailyRevenue = $sales->sum('total');
-        $dailyCost = $sales->sum('cost');
-        $dailyearnings= $sales->sum('earnings');
+        if ($e) {
+            return response()->json([
+                "status" => 1,
+                "message" => "your daily earnings",
+                'data' => $e
+            ]);
+        } else {
+            $sales = Sale::whereDate('created_at', $today)->get();
 
-        $e = new Earning();
+            $dailyRevenue = $sales->sum('total');
+            $dailyCost = $sales->sum('cost');
+            $dailyearnings = $sales->sum('earnings');
 
-        $e->date = $today;
-        $e->revenue = $dailyRevenue;
-        $e->cost = $dailyCost;
-        $e->earnings = $dailyearnings;
+            $e = new Earning();
 
-        $e->save();
+            $e->date = $today;
+            $e->revenue = $dailyRevenue;
+            $e->cost = $dailyCost;
+            $e->earnings = $dailyearnings;
 
-        return response()->json([
-            "status" => 1,
-            "message" => "your daily earnings",
-            'data' => $e
+            $e->save();
+
+            return response()->json([
+                "status" => 1,
+                "message" => "your daily earnings",
+                'data' => $e
+            ]);
+        }
+    }
+
+    public function get_daily_earnings(Request $request)
+    {
+        $validatedData = $request->validate([
+            'date' => 'required|max:25',
         ]);
+
+        $e = Earning::where([
+            'date' => $request->date,
+        ])->first();
+
+        if ($e) {
+            return response()->json([
+                "status" => 1,
+                "message" => "your daily earnings",
+                'data' => $e
+            ]);
+        } else {
+
+            $sales = Sale::whereDate('created_at', $request->date)->get();
+
+            $dailyRevenue = $sales->sum('total');
+            $dailyCost = $sales->sum('cost');
+            $dailyearnings = $sales->sum('earnings');
+
+            $e = new Earning();
+
+            $e->date = $request->date;
+            $e->revenue = $dailyRevenue;
+            $e->cost = $dailyCost;
+            $e->earnings = $dailyearnings;
+
+            $e->save();
+
+            return response()->json([
+                "status" => 1,
+                "message" => "your daily earnings",
+                'data' => $e
+            ]);
+        }
     }
 
 
@@ -51,11 +105,11 @@ class TestController extends Controller
 
         $monthlyRevenue = $sales->sum('total');
         $monthlyCost = $sales->sum('cost');
-        $monthlyearnings= $sales->sum('earnings');
+        $monthlyearnings = $sales->sum('earnings');
 
         $e = new Earning();
 
-        $e->date = Carbon::now();
+        $e->date = null;
         $e->revenue = $monthlyRevenue;
         $e->cost = $monthlyCost;
         $e->earnings = $monthlyearnings;
@@ -69,8 +123,32 @@ class TestController extends Controller
         ]);
     }
 
+    public function get_7day()
+    {
+        $today = Carbon::today();
+        $de = [];
+        // $day = $today->subDay/s($i);
 
-    public function daily() {
+        for ($i = 0; $i < 7; $i++) {
+
+            $e = Earning::whereDate('date', '=', Carbon::today()->subDay($i))->get();
+            //$e  = Earning::latest()->take(7)->get();
+            foreach ($e as $e) {
+                $de[$e->date] = $e->earnings;
+            }
+        }
+
+        return response()->json([
+            "status" => 1,
+            "message" => "your earnings",
+            'data' => $de
+        ]);
+    }
+
+
+
+    public function daily()
+    {
         $today = Carbon::today();
         $e = Earning::whereDate('date', $today)->firstOrFail();
         return response()->json([
@@ -79,7 +157,8 @@ class TestController extends Controller
         ]);
     }
 
-    public function monthly() {
+    public function monthly()
+    {
         $month = Carbon::now()->format('m');
         $year = Carbon::now()->format('Y');
         $e = Earning::whereYear('date', $year)
@@ -90,5 +169,4 @@ class TestController extends Controller
             'cost' => $e->cost,
         ]);
     }
-
 }

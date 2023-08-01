@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('earnings', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date');
+            $table->dateTime('date')->nullable();;
             $table->decimal('revenue',8,2);
             $table->decimal('cost',8,2);
             $table->decimal('earnings',8,2); 

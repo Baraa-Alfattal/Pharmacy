@@ -19,7 +19,8 @@ class ProductController extends Controller
             'name' => 'required|max:25',
             'img' => 'required|max:25',
             'description' => 'required|max:25|nullable',
-            'price' => 'required|max:25|nullable',
+            'b_price' => 'required|max:25|nullable',
+            'a_price' => 'required|max:25|nullable',
             'quantity' => 'required|nullable'
             
         ]);
@@ -49,7 +50,8 @@ class ProductController extends Controller
             $p->description = $request->description;
             $p->img = $request->img;
             $p->quantity = $request->quantity;
-            $p->price = $request->price;
+            $p->b_price = $request->b_price;
+            $p->a_price = $request->a_price;
 
             $p->save();
 
@@ -114,7 +116,8 @@ class ProductController extends Controller
             $p->quantity = isset($request->quantity) ? $request->quantity : $p->quantity;
             $p->description = isset($request->description) ? $request->description : $p->description;
             $p->img = isset($request->img) ? $request->img : $p->img;
-            $p->price = isset($request->price) ? $request->price : $p->price;
+            $p->b_price = isset($request->b_price) ? $request->b_price : $p->b_price;
+            $p->a_price = isset($request->a_price) ? $request->a_price : $p->a_price;
 
             $p->save();
 
@@ -143,7 +146,8 @@ class ProductController extends Controller
             $p->quantity = isset($request->quantity) ? $request->quantity : $p->quantity;
             $p->description = isset($request->description) ? $request->description : $p->description;
             $p->img = isset($request->img) ? $request->img : $p->img;
-            $p->price = isset($request->price) ? $request->price : $p->price;
+            $p->b_price = isset($request->b_price) ? $request->b_price : $p->b_price;
+            $p->a_price = isset($request->a_price) ? $request->a_price : $p->a_price;
 
             $p->save();
 
