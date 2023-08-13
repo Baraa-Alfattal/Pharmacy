@@ -23,7 +23,7 @@ use App\Http\Controllers\API\TestController;
 Route::post("register", [UserController::class, "register"]);
 Route::post("login", [UserController::class, "login"]);
 
-Route::group(["middleware" => ["auth:sanctum"]], function(){
+Route::group(["middleware" => ["auth:sanctum"]], function () {
 
     Route::get("profile", [UserController::class, "profile"]);
     Route::post("update", [UserController::class, "update"]);
@@ -37,7 +37,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
 Route::post("ph_register", [PharmacyController::class, "register"]);
 Route::post("ph_login", [PharmacyController::class, "login"]);
 
-Route::group(["middleware" => ["auth:sanctum"]], function(){
+Route::group(["middleware" => ["auth:sanctum"]], function () {
 
     Route::get("ph_profile", [PharmacyController::class, "profile"]);
     Route::post("ph_update", [PharmacyController::class, "ph_update"]);
@@ -50,12 +50,12 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post("update_medi_id/{id}", [PharmacyController::class, "update_medi_id"]);
     Route::post("update_medi", [PharmacyController::class, "update_medi"]);
 
-     // product api routes
-     Route::post("add_product", [ProductController::class, "add_product"]);
-     Route::get("total_product", [ProductController::class, "totalproduct"]);
-     Route::get("deleteProduct/{id}", [ProductController::class, "deleteProduct"]);
-     Route::post("update_pro_id/{id}", [ProductController::class, "update_product_id"]);
-     Route::post("update_product", [ProductController::class, "update_product"]);
+    // product api routes
+    Route::post("add_product", [ProductController::class, "add_product"]);
+    Route::get("total_product", [ProductController::class, "totalproduct"]);
+    Route::get("deleteProduct/{id}", [ProductController::class, "deleteProduct"]);
+    Route::post("update_pro_id/{id}", [ProductController::class, "update_product_id"]);
+    Route::post("update_product", [ProductController::class, "update_product"]);
 
     Route::post("add_sale", [SaleController::class, "sale"]);
     Route::post("add_sale_name", [SaleController::class, "sale_name"]);
@@ -71,8 +71,6 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("7day", [TestController::class, "get_7day"]);
 
     Route::post("add_notification", [UserController::class, "add_notification"]);
-
-
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
