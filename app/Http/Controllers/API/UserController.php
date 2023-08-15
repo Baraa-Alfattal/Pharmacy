@@ -24,11 +24,11 @@ class UserController extends Controller
             "gender" => "required|min:2|max:10",
             "number" => "required|min:2|max:10",
             "password" => "required|confirmed|max:20",
-            "medicine_used" => "required|max:50",
-            "medicine_allergies" => "required|max:50",
-            "food_allergies" => "required|max:50",
-            "have_disease" => "required|max:50",
-            "another_disease" => "required|max:50"
+            "medicine_used" => "max:50", //required|
+            "medicine_allergies" => "max:50", //required|
+            "food_allergies" => "max:50", //required|
+            "have_disease" => "max:50", //required|
+            "another_disease" => "max:50" //required|
         ]);
 
         // create user data + save
@@ -172,7 +172,12 @@ class UserController extends Controller
 
     function add_cart(Request $request)
     {
-        $validation = Validator::make($request->paginate(), []);
+        $validation = Validator::make($request->paginate(), [
+            "user_id" => "required|integer|exists:users,id",
+            "medican_id" => "required|integer|exists:medicans,id",
+            "product_id" => "required|integer|exists:products,id",
+
+        ]);
     }
 
     function fcm_token(Request $request)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,11 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::get("deleteProduct/{id}", [ProductController::class, "deleteProduct"]);
     Route::post("update_pro_id/{id}", [ProductController::class, "update_product_id"]);
     Route::post("update_product", [ProductController::class, "update_product"]);
+    // cart api routes
+
+    Route::controller(CartController::class)->group(function () {
+        Route::get("cart", "index");
+    });
 
     Route::post("add_sale", [SaleController::class, "sale"]);
     Route::post("add_sale_name", [SaleController::class, "sale_name"]);

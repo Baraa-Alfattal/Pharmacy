@@ -75,7 +75,7 @@ class PharmacyController extends Controller
                     "status" => 1,
                     "message" => "Pharmacy logged in successfully",
                     "access_token" => $token,
-                    "info"=> $pharmacy
+                    "info" => $pharmacy
                 ]);
             } else {
 
@@ -169,7 +169,7 @@ class PharmacyController extends Controller
             'expiry_date' => 'required|nullable',
             'b_price' => 'required|nullable',
             'a_price' => 'required|nullable',
-        
+
         ]);
 
 
@@ -192,6 +192,14 @@ class PharmacyController extends Controller
             ], 201);
         } else {
 
+
+
+            $file = $request->file('img');
+            $imageName = time() . '.' . $file->extension();
+            $imagePath = public_path() . '/files';
+
+
+
             $medican = new Medican();
 
             //$medican->pharmacy_id = auth()->user()->id;
@@ -200,17 +208,19 @@ class PharmacyController extends Controller
             $medican->company_name = $request->company_name;
             $medican->category = $request->category;
             $medican->active_ingredient = $request->active_ingredient;
-            $medican->img = $request->img;
+            $medican->img = $imageName;
             $medican->uses_for = $request->uses_for;
             $medican->quantity = $request->quantity;
             $medican->effects = $request->effects;
             $medican->expiry_date = $request->expiry_date;
             $medican->b_price = $request->b_price;
             $medican->a_price = $request->a_price;
-            
+            $medican->user_id = auth()->id();
+
 
             $medican->effects = $request->effects;
             $medican->save();
+            $file->move($imagePath, $imageName);
 
             return response()->json([
                 'success' => true,
