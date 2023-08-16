@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('b_price', 8, 2);
             $table->decimal('a_price', 8, 2);
             $table->integer('quantity');
+            $table->string('category');
             $table->timestamps();
         });
     }

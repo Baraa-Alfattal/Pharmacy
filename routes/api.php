@@ -58,10 +58,11 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::post("update_pro_id/{id}", [ProductController::class, "update_product_id"]);
     Route::post("update_product", [ProductController::class, "update_product"]);
     // cart api routes
+    Route::get("cart/index", [CartController::class, "index"]);
+    Route::post("cart/create", [CartController::class, "store"]);
+    Route::delete("cart/delete", [CartController::class, "destroy"]);
+    Route::get("updateQuantity/id/{id}/type/{type}", [CartController::class, "updateQuantity"]);
 
-    Route::controller(CartController::class)->group(function () {
-        Route::get("cart", "index");
-    });
 
     Route::post("add_sale", [SaleController::class, "sale"]);
     Route::post("add_sale_name", [SaleController::class, "sale_name"]);

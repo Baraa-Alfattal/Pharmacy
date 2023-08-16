@@ -45,4 +45,18 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
+    public function medican()
+    {
+        return $this->hasMany(Medican::class);
+    }
+
+    public function product()
+    {
+        return $this->hasMany(product::class);
+    }
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
 }
