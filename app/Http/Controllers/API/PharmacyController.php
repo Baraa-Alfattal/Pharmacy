@@ -192,20 +192,10 @@ class PharmacyController extends Controller
             ], 201);
         } else {
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> a3af906629d367088583d49a75b21cf5d81930e5
             $file = $request->file('img');
             $imageName = time() . '.' . $file->extension();
             $imagePath = public_path() . '/files';
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> a3af906629d367088583d49a75b21cf5d81930e5
             $medican = new Medican();
 
             //$medican->pharmacy_id = auth()->user()->id;
