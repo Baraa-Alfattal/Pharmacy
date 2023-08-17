@@ -11,14 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('earnings', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity')->default(1);
+
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->dateTime('date')->nullable();;
-            $table->decimal('revenue', 8, 2);
-            $table->decimal('cost', 8, 2);
-            $table->decimal('earnings', 8, 2);
+
+            $table->bigInteger('medicne_id')->unsigned()->nullable();
+            $table->foreign('medicne_id')->references('id')->on('medicans')->cascadeOnDelete();
+
+            $table->bigInteger('product_id')->unsigned()->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('earnings');
+        Schema::dropIfExists('carts');
     }
 };

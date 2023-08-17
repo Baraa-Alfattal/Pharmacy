@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("user_id");
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             //$table->unsignedInteger("pharmacy_id");
-            $table->unsignedInteger("medican_id");
+            $table->bigInteger('medicne_id')->unsigned()->nullable();
+            $table->foreign('medicne_id')->references('id')->on('medicans')->cascadeOnDelete();
             $table->integer('quantity'); // الكمية المشتريات
-            $table->decimal('total',8,2) ; 
-            $table->decimal('cost',8,2) ; 
-            $table->decimal('earnings',8,2) ; 
+            $table->decimal('total', 8, 2);
+            $table->decimal('cost', 8, 2);
+            $table->decimal('earnings', 8, 2);
             $table->timestamps();
         });
     }

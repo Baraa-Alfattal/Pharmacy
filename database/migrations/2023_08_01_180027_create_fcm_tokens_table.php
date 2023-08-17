@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('earnings', function (Blueprint $table) {
+        Schema::create('fcm_tokens', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->dateTime('date')->nullable();;
-            $table->decimal('revenue', 8, 2);
-            $table->decimal('cost', 8, 2);
-            $table->decimal('earnings', 8, 2);
+            $table->text('fcmtoken');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('earnings');
+        Schema::dropIfExists('fcm_tokens');
     }
 };

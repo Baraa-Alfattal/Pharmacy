@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\disease;
+use App\Models\FcmToken;
+use Dotenv\Validator;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,11 +24,11 @@ class UserController extends Controller
             "gender" => "required|min:2|max:10",
             "number" => "required|min:2|max:10",
             "password" => "required|confirmed|max:20",
-            "medicine_used" => "required|max:50",
-            "medicine_allergies" => "required|max:50",
-            "food_allergies" => "required|max:50",
-            "have_disease" => "required|max:50",
-            "another_disease" => "required|max:50"
+            "medicine_used" => "max:50", //required|
+            "medicine_allergies" => "max:50", //required|
+            "food_allergies" => "max:50", //required|
+            "have_disease" => "max:50", //required|
+            "another_disease" => "max:50" //required|
         ]);
 
         // create user data + save
@@ -95,7 +97,7 @@ class UserController extends Controller
                     "status" => 1,
                     "message" => "user logged in AS User Successfully",
                     "access_token" => $token,
-                    "info"=> $user
+                    "info" => $user
                 ]);
             } else {
 
@@ -168,32 +170,69 @@ class UserController extends Controller
         }
     }
 
-    //This method need to be recoded..
-    //should return a Map<"all notifications", List<NotificatonModel>>.
-    public function add_notification(Request $request){
-        $request -> validate([
+    function add_cart(Request $request)
+    {
+        $validation = Validator::make($request->paginate(), [
+            "user_id" => "required|integer|exists:users,id",
+            "medican_id" => "required|integer|exists:medicans,id",
+            "product_id" => "required|integer|exists:products,id",
+
+        ]);
+    }
+
+    function fcm_token(Request $request)
+    {
+        $request->validate([
+            "user_id" => "required|integer|exists:users,id",
+            "fcmtoken" => "required|unique:fcm_tokens,fcmtoken",
+        ]);
+
+        // create user data + save
+        $fcmtoken = new FcmToken();
+
+        $fcmtoken->user_id = $request->user_id;
+        $fcmtoken->fcmtoken = $request->fcmtoken;
+
+        $fcmtoken->save();
+
+
+        return response()->json([
+            "status" => 200,
+            "message" => "successfully"
+        ], 200);
+    }
+
+
+
+    public function add_notification(Request $request)
+    {
+        $request->validate([
             "user_id" => "required",
             "user_name" => "required",
             "medicine_name" => "required"
         ]);
         $users_id = auth()->user()->id;
-        if ($p = User::find($users_id)){
-            $p->notifications = 
-            ["first notificatoin" => [
-                "user_id"=>$request->user_id, 
-                "user_name" => $request->user_name, 
-                "medicine_name"=>$request->medicine_name
-            ]];
+        if ($p = User::find($users_id)) {
+            $p->notifications =
+                ["first notificatoin" => [
+                    "user_id" => $request->user_id,
+                    "user_name" => $request->user_name,
+                    "medicine_name" => $request->medicine_name
+                ]];
             $p->save();
             return response()->json([
-                "status"=>1, 
+                "status" => 1,
                 "message" => "notifications success",
-                "data" => $p->notifications], 200);
+                "data" => $p->notifications, 200
+            ]);
         }
-    
-        return response()->json([
-            "status" => 0,
-            "message" => "User not found"
-        ], 200);
+
+        return response()->json(
+            [
+                "status" => 0,
+                "message" => "User not found"
+            ],
+            200
+        );
     }
 }

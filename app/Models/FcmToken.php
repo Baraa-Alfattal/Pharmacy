@@ -5,8 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class medicne extends Model
+class FcmToken extends Model
 {
     use HasFactory;
-    protected $guarded=['id'];
+
+    protected $guarded = ['id'];
+
+    public function FcmToken(){
+        return $this->hasOne(User::class);
+    }
 }
