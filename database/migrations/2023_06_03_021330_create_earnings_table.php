@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('earnings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->bigInteger('pharmacie_id')->unsigned()->nullable();
+            $table->foreign('pharmacie_id')->references('id')->on('pharmacies')->cascadeOnDelete()->cascadeOnUpdate();
             $table->dateTime('date')->nullable();;
             $table->decimal('revenue', 8, 2);
             $table->decimal('cost', 8, 2);

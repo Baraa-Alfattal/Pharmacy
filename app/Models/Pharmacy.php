@@ -22,4 +22,9 @@ class Pharmacy extends Model
     {
         return $this->hasMany(Medican::class);
     }
+
+    public function ernings()
+    {
+        return $this->hasOne(Earning::class);
+    }
 }

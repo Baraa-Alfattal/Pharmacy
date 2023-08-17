@@ -31,17 +31,22 @@ class PharmacyController extends Controller
         // create user data + save
         $pharmacy = new Pharmacy();
 
+        $file = $request->file('img');
+        $imageName = time() . '.' . $file->extension();
+        $imagePath = public_path() . '/files';
+
         $pharmacy->name = $request->name;
         $pharmacy->email = $request->email;
         $pharmacy->password = bcrypt($request->password);
         //$pharmacy->role_id = $request->role_id;
         $pharmacy->number_phone = $request->number_phone;
         $pharmacy->site = $request->site;
-        $pharmacy->img = $request->img;
+        $pharmacy->img = $imageName;
         $pharmacy->start_time = $request->start_time;
         $pharmacy->end_time = $request->end_time;
 
         $pharmacy->save();
+        $file->move($imagePath, $imageName);
 
         // send response
         return response()->json([
@@ -128,17 +133,25 @@ class PharmacyController extends Controller
         // ]);
 
         if ($p = Pharmacy::find($pharmacy_id)) {
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
 
             $p->name = isset($request->name) ? $request->name : $p->name;
             $p->email = isset($request->email) ? $request->email : $p->email;
             $p->site = isset($request->site) ? $request->site : $p->site;
             $p->start_time = isset($request->start_time) ? $request->start_time : $p->start_time;
             $p->end_time = isset($request->end_time) ? $request->end_time : $p->end_time;
-            $p->img = isset($request->img) ? $request->img : $p->img;
+            $p->img = $imageName ?? $p->img;
             $p->password = isset($request->password) ? bcrypt($request->password) : $p->password;
             $p->number_phone = isset($request->number_phone) ? $request->number_phone : $p->number_phone;
 
             $p->save();
+            if ($request->file('img')) {
+                $file->move($imagePath, $imageName);
+            }
 
             return response()->json([
                 "status" => 1,
@@ -287,6 +300,11 @@ class PharmacyController extends Controller
         ])->first();
 
         if ($medican) {
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
 
             $medican->name = isset($request->name) ? $request->name : $medican->name;
             $medican->scientific_name = isset($request->scientific_name) ? $request->scientific_name : $medican->scientific_name;
@@ -294,7 +312,7 @@ class PharmacyController extends Controller
             $medican->quantity = isset($request->quantity) ? $request->quantity : $medican->quantity;
             $medican->category = isset($request->category) ? $request->category : $medican->category;
             $medican->active_ingredient = isset($request->active_ingredient) ? $request->active_ingredient : $medican->active_ingredient;
-            $medican->img = isset($request->img) ? $request->img : $medican->img;
+            $medican->img = $imageName ?? $medican->img;
             $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
             $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
             $medican->expiry_date = isset($request->expiry_date) ? $request->expiry_date : $medican->expiry_date;
@@ -302,6 +320,8 @@ class PharmacyController extends Controller
             $medican->a_price = isset($request->a_price) ? $request->a_price : $medican->a_price;
 
             $medican->save();
+            if ($request->file('img'))
+                $file->move($imagePath, $imageName);
 
             return response()->json([
                 "status" => 1,
@@ -325,13 +345,19 @@ class PharmacyController extends Controller
 
         if ($medican) {
 
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
+
             $medican->name = isset($request->name) ? $request->name : $medican->name;
             $medican->scientific_name = isset($request->scientific_name) ? $request->scientific_name : $medican->scientific_name;
             $medican->company_name = isset($request->company_name) ? $request->company_name : $medican->company_name;
             $medican->quantity = isset($request->quantity) ? $request->quantity : $medican->quantity;
             $medican->category = isset($request->category) ? $request->category : $medican->category;
             $medican->active_ingredient = isset($request->active_ingredient) ? $request->active_ingredient : $medican->active_ingredient;
-            $medican->img = isset($request->img) ? $request->img : $medican->img;
+            $medican->img = $imageName ?? $medican->img;
             $medican->uses_for = isset($request->uses_for) ? $request->uses_for : $medican->uses_for;
             $medican->effects = isset($request->effects) ? $request->effects : $medican->effects;
             $medican->expiry_date = isset($request->expiry_date) ? $request->expiry_date : $medican->expiry_date;
@@ -339,6 +365,9 @@ class PharmacyController extends Controller
             $medican->a_price = isset($request->a_price) ? $request->a_price : $medican->a_price;
 
             $medican->save();
+            if ($request->file('img')) {
+                $file->move($imagePath, $imageName);
+            }
 
             return response()->json([
                 "status" => 1,

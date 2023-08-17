@@ -36,7 +36,7 @@ class TestController extends Controller
             $dailyearnings = $sales->sum('earnings');
 
             $e = new Earning();
-
+            $e->pharmacie_id = 1;
             $e->date = $today;
             $e->revenue = $dailyRevenue;
             $e->cost = $dailyCost;
@@ -77,7 +77,7 @@ class TestController extends Controller
             $dailyearnings = $sales->sum('earnings');
 
             $e = new Earning();
-
+            $e->pharmacie_id = 1;
             $e->date = $request->date;
             $e->revenue = $dailyRevenue;
             $e->cost = $dailyCost;
@@ -109,6 +109,7 @@ class TestController extends Controller
 
         $e = new Earning();
 
+        $e->pharmacie_id = 1;
         $e->date = null;
         $e->revenue = $monthlyRevenue;
         $e->cost = $monthlyCost;
