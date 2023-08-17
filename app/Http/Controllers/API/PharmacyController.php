@@ -162,7 +162,7 @@ class PharmacyController extends Controller
             'company_name' => 'required|max:25',
             'category' => 'required|max:25|nullable',
             'active_ingredient' => 'required|max:25|nullable',
-            'img' => 'required|max:25',
+            'img' => 'required|max:100',
             'uses_for' => 'required|max:25|nullable',
             'effects' => 'required|max:25|nullable',
             'quantity' => 'required|nullable',
@@ -192,6 +192,10 @@ class PharmacyController extends Controller
             ], 201);
         } else {
 
+            $file = $request->file('img');
+            $imageName = time() . '.' . $file->extension();
+            $imagePath = public_path() . '/files';
+
             $medican = new Medican();
 
             //$medican->pharmacy_id = auth()->user()->id;
@@ -200,7 +204,7 @@ class PharmacyController extends Controller
             $medican->company_name = $request->company_name;
             $medican->category = $request->category;
             $medican->active_ingredient = $request->active_ingredient;
-            $medican->img = $request->img;
+            $medican->img = $imageName;
             $medican->uses_for = $request->uses_for;
             $medican->quantity = $request->quantity;
             $medican->effects = $request->effects;
@@ -211,6 +215,7 @@ class PharmacyController extends Controller
 
             $medican->effects = $request->effects;
             $medican->save();
+            $file->move($imagePath, $imageName);
 
             return response()->json([
                 'success' => true,
