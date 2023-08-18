@@ -8,6 +8,7 @@ use App\Models\Pharmacy;
 use App\Models\Medican;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class PharmacyController extends Controller
 {
@@ -60,15 +61,15 @@ class PharmacyController extends Controller
     {
         // validation
         $request->validate([
-            "email" => "required|email",
+            "email" => "required|email|exists:pharmacies,email",
             "password" => "required"
         ]);
 
 
         // check user
-        $pharmacy = Pharmacy::where("email", "=", $request->email)->first();
+        $pharmacy = Pharmacy::where("email", $request->email)->first();
 
-        if (isset($pharmacy->id)) {
+        if ($pharmacy) {
 
             if (Hash::check($request->password, $pharmacy->password)) {
 
@@ -77,22 +78,22 @@ class PharmacyController extends Controller
 
                 /// send a response
                 return response()->json([
-                    "status" => 1,
+                    "status" => 200,
                     "message" => "Pharmacy logged in successfully",
                     "access_token" => $token,
                     "info" => $pharmacy
-                ]);
+                ], 200);
             } else {
 
                 return response()->json([
-                    "status" => 0,
+                    "status" => 401,
                     "message" => "Password didn't match"
-                ], 404);
+                ], 401);
             }
         } else {
 
             return response()->json([
-                "status" => 0,
+                "status" => 404,
                 "message" => "Pharmacy not found"
             ], 404);
         }
@@ -101,25 +102,23 @@ class PharmacyController extends Controller
     // USER PROFILE API - GET
     public function profile()
     {
-        $pharmacy_data = auth()->user();
-
         return response()->json([
-            "status" => 1,
+            "status" => 200,
             "message" => "User profile data",
-            "data" => $pharmacy_data
-        ]);
+            "data" => auth()->user()
+        ], 200);
     }
 
     // USER LOGOUT API - GET
     public function logout()
     {
 
-        // auth()->user()->tokens()->delete(); // هذا السطر صحيح ولكن محرر الاكواد لا يتعرف علية
+        auth()->user()->tokens()->delete();
 
         return response()->json([
-            "status" => 1,
+            "status" => 200,
             "message" => "Pharmacy logged out successfully"
-        ]);
+        ], 200);
     }
 
     // USER update API - post
@@ -154,14 +153,14 @@ class PharmacyController extends Controller
             }
 
             return response()->json([
-                "status" => 1,
+                "status" => 200,
                 "message" => "pharmacy data has been updated"
-            ]);
+            ], 200);
         } else {
             return response()->json([
-                "status" => false,
+                "status" => 404,
                 "message" => "pharmacy doesn't exists"
-            ]);
+            ], 404);
         }
     }
 
@@ -171,17 +170,17 @@ class PharmacyController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:25',
-            'scientific_name' => 'required|max:25',
-            'company_name' => 'required|max:25',
-            'category' => 'required|max:25|nullable',
-            'active_ingredient' => 'required|max:25|nullable',
-            'img' => 'required|max:25',
-            'uses_for' => 'required|max:25|nullable',
-            'effects' => 'required|max:25|nullable',
-            'quantity' => 'required|nullable',
-            'expiry_date' => 'required|nullable',
-            'b_price' => 'required|nullable',
-            'a_price' => 'required|nullable',
+            'scientific_name' => 'required|max:1024',
+            'company_name' => 'required|max:255',
+            'category' => 'required|max:255',
+            'active_ingredient' => 'required|max:1024',
+            'img' => 'nullable|image|mimes:jpg,png,jpeg',
+            'uses_for' => 'required|max:1024',
+            'effects' => 'required|max:1024',
+            'quantity' => 'required',
+            'expiry_date' => 'required',
+            'b_price' => 'required',
+            'a_price' => 'required',
 
         ]);
 
@@ -206,10 +205,11 @@ class PharmacyController extends Controller
         } else {
 
 
-
-            $file = $request->file('img');
-            $imageName = time() . '.' . $file->extension();
-            $imagePath = public_path() . '/files';
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
 
 
 
@@ -221,7 +221,7 @@ class PharmacyController extends Controller
             $medican->company_name = $request->company_name;
             $medican->category = $request->category;
             $medican->active_ingredient = $request->active_ingredient;
-            $medican->img = $imageName;
+            $medican->img = $imageName ?? null;
             $medican->uses_for = $request->uses_for;
             $medican->quantity = $request->quantity;
             $medican->effects = $request->effects;
@@ -233,10 +233,11 @@ class PharmacyController extends Controller
 
             $medican->effects = $request->effects;
             $medican->save();
-            $file->move($imagePath, $imageName);
+            if ($request->file('img'))
+                $file->move($imagePath, $imageName);
 
             return response()->json([
-                'success' => true,
+                'success' => 201,
                 'message' => 'medican added successfully.',
                 'data' => $medican
             ], 201);
@@ -257,47 +258,41 @@ class PharmacyController extends Controller
 
         $medican = Medican::all();
         return response()->json([
-            "status" => 1,
+            "status" => 200,
             "message" => "Total your medicans ",
             "data" => $medican
-        ]);
+        ], 200);
     }
 
     // DELETE MEDICAN API - GET
     public function deleteMedican($id)
     {
-
-        //$pharmacy_id = auth()->user()->id;
-
-        if (Medican::where([
-            "id" => $id,
-            //"pharmacy_id" => $pharmacy_id
-        ])->exists()) {
-
-            $Medican = Medican::find($id);
-
+        $validation =  Validator::make(
+            ['id' => $id],
+            ['id' => ['required', 'integer', 'exists:medicans,id']]
+        );
+        if ($validation->fails()) {
+            return $validation->errors();
+        }
+        $Medican = Medican::where("id", $id)->first();
+        if ($Medican) {
             $Medican->delete();
-
             return response()->json([
-                "status" => 1,
+                "status" => 200,
                 "message" => "Medican deleted successfully"
-            ]);
+            ], 200);
         } else {
-
             return response()->json([
-                "status" => 0,
+                "status" => 404,
                 "message" => "Medican not found"
-            ]);
+            ], 404);
         }
     }
 
     public function update_medi_id(Request $request, $id)
     {
-
-        $medican = Medican::where([
-            "id" => $id,
-            //'pharmacy_id' => auth()->user()->id
-        ])->first();
+ 
+        $medican = Medican::where("id", $id)->first();
 
         if ($medican) {
             if ($request->file('img')) {

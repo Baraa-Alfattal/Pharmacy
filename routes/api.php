@@ -29,13 +29,13 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::get("profile", [UserController::class, "profile"]);
     Route::post("update", [UserController::class, "update"]);
     Route::get("logout", [UserController::class, "logout"]);
-    Route::get('/add_cart', [UserController::class, "add_cart"]);
+    Route::get('/add_cart', [UserController::class, "add_cart"]); //=============/Delete me befor mokabala\=============\\
 
     // course api routes
 
 });
 
-Route::post("ph_register", [PharmacyController::class, "register"]);
+Route::post("ph_register", [PharmacyController::class, "register"]); //=============/Delete me befor mokabala\=============\\
 Route::post("ph_login", [PharmacyController::class, "login"]);
 
 Route::group(["middleware" => ["auth:sanctum"]], function () {

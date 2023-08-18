@@ -19,41 +19,42 @@ class UserController extends Controller
         // validation
         $request->validate([
             "name" => "required|max:20",
-            "email" => "required|email|unique:users",
+            "email" => "required|email|unique:users,email",
             "b_day" => "required",
             "gender" => "required|min:2|max:10",
-            "number" => "required|min:2|max:10",
-            "password" => "required|confirmed|max:20",
-            "medicine_used" => "max:50", //required|
-            "medicine_allergies" => "max:50", //required|
-            "food_allergies" => "max:50", //required|
-            "have_disease" => "max:50", //required|
-            "another_disease" => "max:50" //required|
+            "img" => "nullable|image|mimes:jpg,png,jpeg",
+            "number" => "required|digits:10|start_with:09",
+            "password" => "required|confirmed|max:20|min:8",
+            "medicine_used" => "max:1024", //required|
+            "medicine_allergies" => "max:1024", //required|
+            "food_allergies" => "max:1024", //required|
+            "have_disease" => "max:1024", //required|
+            "another_disease" => "max:1024" //required|
         ]);
 
         // create user data + save
         $user = new User();
-
-        $file = $request->file('img');
-        $imageName = time() . '.' . $file->extension();
-        $imagePath = public_path() . '/files';
-
+        if ($request->file('img')) {
+            $file = $request->file('img');
+            $imageName = time() . '.' . $file->extension();
+            $imagePath = public_path() . '/files';
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         $user->b_day = $request->b_day;
         $user->gender = $request->gender;
         $user->number = $request->number;
         $user->img = $imageName;
-        $user->password = bcrypt($request->password);
-        $user->medicine_used = $request->medicine_used;
-        $user->medicine_allergies = $request->medicine_allergies;
-        $user->food_allergies = $request->food_allergies;
-        $user->have_disease = $request->have_disease;
-        $user->another_disease = $request->another_disease;
+        $user->password = Hash::make($request->password);
+        $user->medicine_used = $request->medicine_used ?? null;
+        $user->medicine_allergies = $request->medicine_allergies ?? null;
+        $user->food_allergies = $request->food_allergies ?? null;
+        $user->have_disease = $request->have_disease ?? null;
+        $user->another_disease = $request->another_disease ?? null;
 
         $user->save();
-
-        $file->move($imagePath, $imageName);
+        if ($request->file('img'))
+            $file->move($imagePath, $imageName);
 
         // send response
         return response()->json([
@@ -67,8 +68,8 @@ class UserController extends Controller
     {
         // validation
         $request->validate([
-            "email" => "required|email",
-            "password" => "required"
+            "email" => "required|email|exists:users,email",
+            "password" => "required|min:8"
         ]);
 
         // verify user + token
@@ -90,9 +91,9 @@ class UserController extends Controller
 
 
         // check user
-        $user = User::where("email", "=", $request->email)->first();
+        $user = User::where("email", $request->email)->first();
 
-        if (isset($user->id)) {
+        if ($user) {
 
             if (Hash::check($request->password, $user->password)) {
 
@@ -101,7 +102,7 @@ class UserController extends Controller
 
                 /// send a response
                 return response()->json([
-                    "status" => 1,
+                    "status" => 200,
                     "message" => "user logged in AS User Successfully",
                     "access_token" => $token,
                     "info" => $user
@@ -109,14 +110,14 @@ class UserController extends Controller
             } else {
 
                 return response()->json([
-                    "status" => 0,
+                    "status" => 401,
                     "message" => "Password didn't match"
-                ], 404);
+                ], 401);
             }
         } else {
 
             return response()->json([
-                "status" => 0,
+                "status" => 404,
                 "message" => "user not found"
             ], 404);
         }
@@ -125,25 +126,23 @@ class UserController extends Controller
     // USER PROFILE API - GET
     public function profile()
     {
-        $user_data = auth()->user();
-
         return response()->json([
-            "status" => 1,
+            "status" => 200,
             "message" => "User profile data",
-            "data" => $user_data
-        ]);
+            "data" => auth()->user()
+        ], 200);
     }
 
     // USER LOGOUT API - GET
     public function logout()
     {
 
-        auth()->user()->tokens()->delete(); // هذا السطر صحيح ولكن محرر الاكواد لا يتعرف علية
+        auth()->user()->tokens()->delete();
 
         return response()->json([
-            "status" => 1,
+            "status" => 200,
             "message" => "User logged out successfully"
-        ]);
+        ], 200);
     }
 
     // USER update API - post
@@ -183,7 +182,6 @@ class UserController extends Controller
             "user_id" => "required|integer|exists:users,id",
             "medican_id" => "required|integer|exists:medicans,id",
             "product_id" => "required|integer|exists:products,id",
-
         ]);
     }
 
