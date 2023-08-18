@@ -170,19 +170,6 @@ class PharmacyController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:25',
-<<<<<<< HEAD
-            'scientific_name' => 'required|max:25',
-            'company_name' => 'required|max:25',
-            'category' => 'required|max:25|nullable',
-            'active_ingredient' => 'required|max:25|nullable',
-            'img' => 'required|max:100',
-            'uses_for' => 'required|max:25|nullable',
-            'effects' => 'required|max:25|nullable',
-            'quantity' => 'required|nullable',
-            'expiry_date' => 'required|nullable',
-            'b_price' => 'required|nullable',
-            'a_price' => 'required|nullable',
-=======
             'scientific_name' => 'required|max:1024',
             'company_name' => 'required|max:255',
             'category' => 'required|max:255',
@@ -194,10 +181,8 @@ class PharmacyController extends Controller
             'expiry_date' => 'required',
             'b_price' => 'required',
             'a_price' => 'required',
->>>>>>> 8cf0fc55dc891f11b47067ad1e69f81aa52d70a2
 
         ]);
-
 
 
         $medican = Medican::where([
@@ -218,18 +203,16 @@ class PharmacyController extends Controller
             ], 201);
         } else {
 
-<<<<<<< HEAD
-            $file = $request->file('img');
-            $imageName = time() . '.' . $file->extension();
-            $imagePath = public_path() . '/files';
-=======
+
+            // $file = $request->file('img');
+            // $imageName = time() . '.' . $file->extension();
+            // $imagePath = public_path() . '/files';
 
             if ($request->file('img')) {
                 $file = $request->file('img');
                 $imageName = time() . '.' . $file->extension();
                 $imagePath = public_path() . '/files';
             }
->>>>>>> 8cf0fc55dc891f11b47067ad1e69f81aa52d70a2
 
             $medican = new Medican();
 
