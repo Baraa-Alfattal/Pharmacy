@@ -136,7 +136,7 @@ class SaleController extends Controller
 
             $sale->user_id = auth()->user()->id;
            // $sale->pharmacy_id = $pharmacy->id;
-            $sale->medican_id = $medican->id;
+            $sale->medicne_id = $medican->id;
             //$sale->medican_name = $request->medican_name;
             $sale->quantity = $request->quantity;
             $sale->total = $request->quantity * $medican->a_price;
