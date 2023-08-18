@@ -23,7 +23,7 @@ class PharmacyController extends Controller
             //"role_id" => "required|integer|max:3",
             "number_phone" => "required|min:2|max:10",
             "site" => "required",
-            "img" => "required",
+            "img" => "nullable|image|mimes:jpg,png,jpeg",
             "start_time" => "required",
             "end_time" => "required",
 
@@ -229,7 +229,7 @@ class PharmacyController extends Controller
             $medican->expiry_date = $request->expiry_date;
             $medican->b_price = $request->b_price;
             $medican->a_price = $request->a_price;
-            $medican->user_id = auth()->id();
+            //$medican->user_id = auth()->id();
 
 
             $medican->effects = $request->effects;

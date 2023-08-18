@@ -21,7 +21,8 @@ class ProductController extends Controller
             'description' => 'required|max:25|nullable',
             'b_price' => 'required|max:25|nullable',
             'a_price' => 'required|max:25|nullable',
-            'quantity' => 'required|nullable'
+            'quantity' => 'required|nullable',
+            'category' => 'required|nullable'
 
         ]);
 
@@ -56,6 +57,7 @@ class ProductController extends Controller
             $p->quantity = $request->quantity;
             $p->b_price = $request->b_price;
             $p->a_price = $request->a_price;
+             $p->category = $request->category;
 
             $p->save();
             $file->move($imagePath, $imageName);
