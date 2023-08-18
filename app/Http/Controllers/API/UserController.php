@@ -23,7 +23,7 @@ class UserController extends Controller
             "b_day" => "required",
             "gender" => "required|min:2|max:10",
             "img" => "nullable|image|mimes:jpg,png,jpeg",
-            "number" => "required|digits:10|start_with:09",
+            "number" => "required|digits:10",
             "password" => "required|confirmed|max:20|min:8",
             "medicine_used" => "max:1024", //required|
             "medicine_allergies" => "max:1024", //required|
