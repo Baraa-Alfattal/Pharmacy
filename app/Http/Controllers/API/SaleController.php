@@ -23,7 +23,7 @@ class SaleController extends Controller
         // validation
         $request->validate([
             //"pharmacy_id" => "required|integer",
-            "medican_id" => "required|integer",
+            "medicne_id" => "required|integer",
             "quantity" => "required|integer",
         ]);
 
@@ -39,7 +39,7 @@ class SaleController extends Controller
         // }
 
         $medican = Medican::where([
-            'id' => $request->medican_id
+            'id' => $request->medicne_id
         ])->first();
 
         if (!$medican) {
@@ -63,7 +63,7 @@ class SaleController extends Controller
 
             $sale->user_id = auth()->user()->id;
             //$sale->pharmacy_id = $request->pharmacy_id;
-            $sale->medican_id = $request->medican_id;
+            $sale->medicne_id = $request->medicne_id;
            // $sale->medican_name = $medican->name;
             $sale->quantity = $request->quantity;
             $sale->total = $request->quantity * $medican->a_price;
