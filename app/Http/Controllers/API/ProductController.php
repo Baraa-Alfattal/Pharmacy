@@ -22,7 +22,7 @@ class ProductController extends Controller
             'b_price' => 'required|max:25|nullable',
             'a_price' => 'required|max:25|nullable',
             'quantity' => 'required|nullable'
-            
+
         ]);
 
 
@@ -46,14 +46,19 @@ class ProductController extends Controller
 
             $p = new product();
 
+            $file = $request->file('img');
+            $imageName = time() . '.' . $file->extension();
+            $imagePath = public_path() . '/files';
+
             $p->name = $request->name;
             $p->description = $request->description;
-            $p->img = $request->img;
+            $p->img = $imageName;
             $p->quantity = $request->quantity;
             $p->b_price = $request->b_price;
             $p->a_price = $request->a_price;
 
             $p->save();
+            $file->move($imagePath, $imageName);
 
             return response()->json([
                 'success' => true,
@@ -65,7 +70,7 @@ class ProductController extends Controller
 
     public function totalproduct()
     {
-       
+
 
         $p = product::all();
         return response()->json([
@@ -79,7 +84,7 @@ class ProductController extends Controller
     public function deleteProduct($id)
     {
 
-       
+
 
         if (product::where([
             "id" => $id,
@@ -111,16 +116,22 @@ class ProductController extends Controller
         ])->first();
 
         if ($p) {
-
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
             $p->name = isset($request->name) ? $request->name : $p->name;
             $p->quantity = isset($request->quantity) ? $request->quantity : $p->quantity;
             $p->description = isset($request->description) ? $request->description : $p->description;
-            $p->img = isset($request->img) ? $request->img : $p->img;
+            $p->img = $imageName ?? $p->img;
             $p->b_price = isset($request->b_price) ? $request->b_price : $p->b_price;
             $p->a_price = isset($request->a_price) ? $request->a_price : $p->a_price;
 
             $p->save();
-
+            if ($request->file('img')) {
+                $file->move($imagePath, $imageName);
+            }
             return response()->json([
                 "status" => 1,
                 "message" => "product data has been updated"
@@ -141,15 +152,23 @@ class ProductController extends Controller
         ])->first();
 
         if ($p) {
+            if ($request->file('img')) {
+                $file = $request->file('img');
+                $imageName = time() . '.' . $file->extension();
+                $imagePath = public_path() . '/files';
+            }
 
             $p->name = isset($request->name) ? $request->name : $p->name;
             $p->quantity = isset($request->quantity) ? $request->quantity : $p->quantity;
             $p->description = isset($request->description) ? $request->description : $p->description;
-            $p->img = isset($request->img) ? $request->img : $p->img;
+            $p->img = $imageName ?? $p->img;
             $p->b_price = isset($request->b_price) ? $request->b_price : $p->b_price;
             $p->a_price = isset($request->a_price) ? $request->a_price : $p->a_price;
 
             $p->save();
+            if ($request->file('img')) {
+                $file->move($imagePath, $imageName);
+            }
 
             return response()->json([
                 "status" => 1,

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\disease;
 use App\Models\FcmToken;
-use Dotenv\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -34,11 +34,16 @@ class UserController extends Controller
         // create user data + save
         $user = new User();
 
+        $file = $request->file('img');
+        $imageName = time() . '.' . $file->extension();
+        $imagePath = public_path() . '/files';
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->b_day = $request->b_day;
         $user->gender = $request->gender;
         $user->number = $request->number;
+        $user->img = $imageName;
         $user->password = bcrypt($request->password);
         $user->medicine_used = $request->medicine_used;
         $user->medicine_allergies = $request->medicine_allergies;
@@ -47,6 +52,8 @@ class UserController extends Controller
         $user->another_disease = $request->another_disease;
 
         $user->save();
+
+        $file->move($imagePath, $imageName);
 
         // send response
         return response()->json([
